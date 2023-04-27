@@ -1,16 +1,41 @@
+import { useEffect, useState } from "react";
+import axios from "../../node_modules/axios/index";
+import SearchBox from "../components/SearchBox";
+import TableView from "../components/Table";
+import { Country } from '../types';
+
 
 const Hero = () => {
-  return (
-    <div className="hero min-h-screen bg-base-200">
-  <div className="hero-content text-center">
-    <div className="max-w-md">
-      <h1 className="text-5xl font-bold">Hello there</h1>
-      <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
-      <button className="btn btn-primary">Get Started</button>
-    </div>
-  </div>
-</div>
-  )
-}
 
-export default Hero
+  const [countries, setCountries] = useState<Country[]>([]);
+
+  
+
+  function getData() {
+    axios.get('https://restcountries.com/v3.1/all?fields=name,currencies,capital,languages,independent,flag,tld,unMember,status,region,subregion,maps,population,timezones,flags,area,coatOfArms,landlocked')
+      .then(response => {
+        setCountries(response.data);
+        console.log(countries)
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+useEffect(() => {
+  getData();
+}, [])
+
+  return (
+    <div className="hero min-h-screen">
+      <div className="hero-content text-center text-neutral-content">
+        <div className="flex flex-col">
+        <SearchBox />
+           { countries.length != 0 ?  (<TableView countries={countries} />) : (<div>Loading...</div>)}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Hero;

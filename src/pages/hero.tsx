@@ -7,9 +7,7 @@ import { Country } from '../types';
 
 const Hero = () => {
 
-  const [countries, setCountries] = useState<Country[]>([]);
-
-  
+  const [countries, setCountries] = useState<Country[]>([]);  
 
   function getData() {
     axios.get('https://restcountries.com/v3.1/all?fields=name,currencies,capital,languages,independent,flag,tld,unMember,status,region,subregion,maps,population,timezones,flags,area,coatOfArms,landlocked')
@@ -24,11 +22,11 @@ const Hero = () => {
 
 useEffect(() => {
   getData();
-}, [])
+})
 
   return (
-    <div className="hero min-h-screen">
-      <div className="hero-content text-center text-neutral-content">
+    <div className="hero min-h-screen w-screen">
+      <div className="hero-content text-center text-neutral-content m-8">
         <div className="flex flex-col">
         <SearchBox />
            { countries.length != 0 ?  (<TableView countries={countries} />) : (<div>Loading...</div>)}
